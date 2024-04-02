@@ -27,13 +27,13 @@ class Main_menu:
         self.Btnframe = tk.Frame(borderwidth=1, bg="#FF4500")
         self.Btnframe.pack(anchor='center', padx=5, pady=5)
 
-        self.Play = tk.Button(self.Btnframe, text="Play", bg="Black", fg="#FF4500")
+        self.Play = tk.Button(self.Btnframe, text="Play", bg="Black", fg="#FF4500", activebackground="#FF4500",activeforeground="Black")
         self.Play.pack(ipadx=39, ipady=1)
 
-        self.Fullscren = tk.Button(self.Btnframe, command=Fullscreen, text="Fulscreen", bg="Black", fg="#FF4500")
+        self.Fullscren = tk.Button(self.Btnframe, command=Fullscreen, text="Fulscreen", bg="Black", fg="#FF4500", activebackground="#FF4500",activeforeground="Black")
         self.Fullscren.pack(ipadx=25, ipady=1)
 
-        self.Exit = tk.Button(self.Btnframe, command=lambda: self.root.destroy(), text="Exit", bg="Black", fg="#FF4500")
+        self.Exit = tk.Button(self.Btnframe, command=lambda: self.root.destroy(), text="Exit", bg="Black", fg="#FF4500", activebackground="#FF4500",activeforeground="Black")
         self.Exit.pack(ipadx=41, ipady=1)
 
         self.root.mainloop()
