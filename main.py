@@ -1,40 +1,48 @@
 from tkinter import *
-from tkinter import ttk
 import tkinter as tk
-
+from game import Research
 class Main_menu:
     def __init__(self):
+        #Основные атрибуты
         self.root = tk.Tk()
-        self.root.geometry("1280x720+325+130")
+        self.root.geometry("1920x1080")
         self.root.title("Lcorp Echoes")
         self.root.iconbitmap(default="LEchoes.ico")
         self.root.configure(bg='black')  #FF4500
         self.root.resizable(False, False)
 
-        self.MenuLogo = PhotoImage(file="./resourses/LogoMenu.png")
-        self.label = tk.Label(image=self.MenuLogo, background='black')
+        self.menulogo = PhotoImage(file="./resourses/LogoMenu.png")
+        self.label = tk.Label(image=self.menulogo, background='black')
         self.label.pack()
 
-        self.FsMode=False
-        def Fullscreen():
-            if(self.FsMode==False):
-                self.FsMode=True
-                self.root.attributes('-fullscreen', self.FsMode)
+        #Полный экран
+        self.fsmode=True
+        self.root.attributes('-fullscreen', self.fsmode)
+        def fullscreen():
+            if self.fsmode==True:
+                self.fsmode=False
+                self.root.attributes('-fullscreen', self.fsmode)
             else:
-                self.FsMode=False
-                self.root.attributes('-fullscreen', self.FsMode)
+                self.fsmode=True
+                self.root.attributes('-fullscreen', self.fsmode)
 
-        self.Btnframe = tk.Frame(borderwidth=1, bg="#FF4500")
-        self.Btnframe.pack(anchor='center', padx=5, pady=5)
+        def play():
+            self.root.destroy()
+            researchwindow = Research()
 
-        self.Play = tk.Button(self.Btnframe, text="Play", bg="Black", fg="#FF4500", activebackground="#FF4500",activeforeground="Black")
-        self.Play.pack(ipadx=39, ipady=1)
 
-        self.Fullscren = tk.Button(self.Btnframe, command=Fullscreen, text="Fulscreen", bg="Black", fg="#FF4500", activebackground="#FF4500",activeforeground="Black")
-        self.Fullscren.pack(ipadx=25, ipady=1)
+        #Кнопки
+        self.btnframe = tk.Frame(borderwidth=1, bg="#FF4500")
+        self.btnframe.pack(anchor='center', padx=5, pady=5)
 
-        self.Exit = tk.Button(self.Btnframe, command=lambda: self.root.destroy(), text="Exit", bg="Black", fg="#FF4500", activebackground="#FF4500",activeforeground="Black")
-        self.Exit.pack(ipadx=41, ipady=1)
+        self.play = tk.Button(self.btnframe, command=play, text="Play", bg="Black", fg="#FF4500", activebackground="#FF4500", activeforeground="Black")
+        self.play.pack(ipadx=39, ipady=1)
+
+        self.fullscren = tk.Button(self.btnframe, command=fullscreen, text="Fulscreen", bg="Black", fg="#FF4500", activebackground="#FF4500",activeforeground="Black")
+        self.fullscren.pack(ipadx=25, ipady=1)
+
+        self.exit = tk.Button(self.btnframe, command=lambda: self.root.destroy(), text="Exit", bg="Black", fg="#FF4500", activebackground="#FF4500",activeforeground="Black")
+        self.exit.pack(ipadx=41, ipady=1)
 
         self.root.mainloop()
 
