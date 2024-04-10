@@ -32,6 +32,9 @@ class Research(Tk):
         def event():
             eventwindow = Event()
 
+        canvas = Canvas(bg="black", width=1280, height=720)
+        canvas.pack(anchor=CENTER, expand=1)
+
         self.play = tk.Button(command=inventory,text="Inventory",bg="Black",fg="#FF4500",activebackground="#FF4500",activeforeground="Black")
         self.play.pack(ipadx=26, ipady=10,anchor="s",side=LEFT)
         self.play = tk.Button(command=information,text="Information",bg="Black",fg="#FF4500",activebackground="#FF4500",activeforeground="Black")
