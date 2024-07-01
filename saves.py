@@ -6,13 +6,12 @@ def str_to_bool(value_str):
     else:
         raise ValueError(f"Некорректное значение: '{value_str}'. Ожидается 'true' или 'false'.")
 
-
 with open('Saves.txt', 'r') as fp:
     first = fp.readlines()[0].strip()
-    fsmod = str_to_bool(first)
-
+    _fsmod = str_to_bool(first)
 
 def fsmodeswap():
+    global _fsmod
     try:
         with open('Saves.txt', 'r') as file:
             lines = file.readlines()
@@ -42,9 +41,11 @@ def fsmodeswap():
     except IOError:
         print(f"Ошибка записи в файл: Saves.txt")
         return
-
+    _fsmod = str_to_bool(inverted_value)
     print(f"Значение полноэкранного режима Saves.txt изменено: {inverted_value}")
     return inverted_value
 
-#fsmodeswap()
+def fsmod():
+    return _fsmod
+
 

@@ -3,7 +3,7 @@ import tkinter as tk
 
 from game import Research
 from basewindow import BaseWindow
-from saves import fsmod, fsmodeswap
+from saves import fsmodeswap
 
 
 class MainMenu(BaseWindow):
@@ -14,7 +14,6 @@ class MainMenu(BaseWindow):
         self.menulogo = PhotoImage(file="./resourses/LogoMenu.png")
         self.label = tk.Label(image=self.menulogo, background='black')
         self.label.pack()
-        self.attributes('-fullscreen', fsmod)
 
         def fullscreen():
             s = fsmodeswap()

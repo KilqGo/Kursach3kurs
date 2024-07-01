@@ -1,6 +1,7 @@
 from tkinter import *
 from saves import fsmod
 
+
 class BaseWindow(Tk):
     def __init__(self):
 
@@ -13,3 +14,4 @@ class BaseWindow(Tk):
         win.iconbitmap(default="./resourses/LEchoes.ico")
         win.configure(bg='black')  #FF4500
         win.resizable(False, False)
+        win.attributes('-fullscreen', fsmod())

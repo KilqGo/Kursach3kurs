@@ -1,7 +1,6 @@
 from tkinter import *
 import tkinter as tk
 from basewindow import BaseWindow
-from saves import fsmod
 from information import Information
 from inventory import Inventory
 from battle import Battle
@@ -14,8 +13,7 @@ class Research(BaseWindow):
         self.ebutton = tk.Button(self, text="Exit", bg="Black", fg="#FF4500", activebackground="#FF4500",activeforeground="Black")
         self.ebutton["command"] = self.button_clicked
         self.ebutton.pack(anchor="ne", expand=1)
-        print(fsmod)
-        self.attributes('-fullscreen', fsmod)
+
 
         def inventory():
             inventorywindow = Inventory()
