@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter as tk
+from saves import fsmod
 from basewindow import BaseWindow
 from information import Information
 from inventory import Inventory
@@ -10,9 +11,13 @@ class Research(BaseWindow):
     def __init__(self):
         super().__init__()
 
-        self.ebutton = tk.Button(self, text="Exit", bg="Black", fg="#FF4500", activebackground="#FF4500",activeforeground="Black")
-        self.ebutton["command"] = self.button_clicked
-        self.ebutton.pack(anchor="ne", expand=1)
+        if fsmod() == True:
+            self.ebutton = tk.Button(self, text="Exit", bg="Black", fg="#FF4500", activebackground="#FF4500",
+                                     activeforeground="Black")
+            self.ebutton["command"] = self.button_clicked
+            self.ebutton.pack(anchor="ne", expand=1)
+        else:
+            None
 
 
         def inventory():
