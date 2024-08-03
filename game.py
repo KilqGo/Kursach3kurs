@@ -27,6 +27,7 @@ class Research(BaseWindow):
             informationwindow = Information()
 
         def battle():
+            self.destroy()
             battlewindow = Battle()
 
         def event():
@@ -35,14 +36,20 @@ class Research(BaseWindow):
         canvas = Canvas(bg="black", width=300, height=200)
         canvas.pack(anchor=CENTER, expand=1)
 
-        self.play = tk.Button(command=inventory,text="Inventory",bg="Black",fg="#FF4500",activebackground="#FF4500",activeforeground="Black")
+        self.btnframe = tk.Frame(borderwidth=1, bg="#FF4500")
+        self.btnframe.pack(anchor='s', padx=5, pady=5)
+
+        self.play = tk.Button(self.btnframe,command=inventory,text="Inventory",bg="Black",fg="#FF4500",activebackground="#FF4500",activeforeground="Black")
+        self.play.pack(ipadx=16, ipady=10,anchor="s",side=LEFT)
+
+        self.play = tk.Button(self.btnframe,command=information,text="Information",bg="Black",fg="#FF4500",activebackground="#FF4500",activeforeground="Black")
+        self.play.pack(ipadx=12, ipady=10,anchor="s",side=LEFT)
+
+        self.play = tk.Button(self.btnframe,command=battle,text="Battle",bg="Black",fg="#FF4500",activebackground="#FF4500",activeforeground="Black")
         self.play.pack(ipadx=26, ipady=10,anchor="s",side=LEFT)
-        self.play = tk.Button(command=information,text="Information",bg="Black",fg="#FF4500",activebackground="#FF4500",activeforeground="Black")
-        self.play.pack(ipadx=20, ipady=10,anchor="s",side=LEFT)
-        self.play = tk.Button(command=battle,text="Battle",bg="Black",fg="#FF4500",activebackground="#FF4500",activeforeground="Black")
-        self.play.pack(ipadx=20, ipady=10,anchor="s",side=LEFT)
-        self.play = tk.Button(command=event,text="Event",bg="Black",fg="#FF4500",activebackground="#FF4500",activeforeground="Black")
-        self.play.pack(ipadx=20, ipady=10,anchor="s",side=LEFT)
+
+        self.play = tk.Button(self.btnframe,command=event,text="Event",bg="Black",fg="#FF4500",activebackground="#FF4500",activeforeground="Black")
+        self.play.pack(ipadx=26, ipady=10,anchor="s",side=LEFT)
 
     def button_clicked(self):
         self.destroy()
