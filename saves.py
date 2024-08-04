@@ -48,4 +48,18 @@ def fsmodeswap():
 def fsmod():
     return _fsmod
 
+# --------------------------------------------------------------------------
+
+
+class Stats:
+    Fortitude = 1
+    Prudence = 1
+    Justice = 1
+    basehp = Fortitude*10
+    basesp = Prudence*10
+    basedmg = Justice*5
+    hpdefence = 100
+    spdefence = 100
+    bothdefence = 100
+    persdefence = 100
 
