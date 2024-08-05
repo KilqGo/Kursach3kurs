@@ -235,7 +235,7 @@ class GameWindow(tk.Tk):
             base_health=100,
             attack=15,
             defense=5,
-            behavior_patterns=[aggressive_pattern, defensive_pattern]
+            behavior_patterns=[aggressive_pattern,aggressive_pattern, defensive_pattern]
         )
 
         # Создание второго врага
@@ -244,12 +244,12 @@ class GameWindow(tk.Tk):
             base_health=80,
             attack=12,
             defense=3,
-            behavior_patterns=[aggressive_pattern, defensive_pattern]
+            behavior_patterns=[aggressive_pattern, defensive_pattern, defensive_pattern]
         )
 
         # Создание игрока
         self.player = Player(
-            name="Игрок",
+            name="Мйю",
             base_health=100,  # Базовое здоровье
             attack=10,
             defense=5,
