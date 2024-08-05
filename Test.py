@@ -257,10 +257,10 @@ class GameWindow(tk.Tk):
         )
 
         # Кнопки для начала сражения
-        self.battle_button1 = ttk.Button(self, text="Сразиться с Воргом", command=lambda: self.start_battle(self.enemy1))
+        self.battle_button1 = ttk.Button(self, text="Сразиться с 1", command=lambda: self.start_battle(self.enemy1))
         self.battle_button1.pack(pady=10)
 
-        self.battle_button2 = ttk.Button(self, text="Сразиться с Гоблином", command=lambda: self.start_battle(self.enemy2))
+        self.battle_button2 = ttk.Button(self, text="Сразиться с 2", command=lambda: self.start_battle(self.enemy2))
         self.battle_button2.pack(pady=10)
 
         # Метка для отображения опыта игрока
@@ -273,8 +273,8 @@ class GameWindow(tk.Tk):
         self.battle_window.grab_set()
 
     def show_start_button(self):
-        self.battle_button1.config(state="normal")  # Включить кнопку "Сразиться с Воргом"
-        self.battle_button2.config(state="normal")  # Включить кнопку "Сразиться с Гоблином"
+        self.battle_button1.config(state="normal")  # Включить кнопку "Сразиться с 1"
+        self.battle_button2.config(state="normal")  # Включить кнопку "Сразиться с 2"
         self.experience_label.config(text=f"Опыт {self.player.name}: {self.player.experience}")  # Обновить метку опыта
 
 if __name__ == "__main__":

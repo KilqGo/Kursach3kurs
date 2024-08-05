@@ -1,7 +1,7 @@
 from tkinter import *
-from saves import fsmod
 import tkinter as tk
 from basewindow import BaseWindow
+from saves import fsmod
 
 class Battle(BaseWindow):
     def __init__(self):
@@ -26,9 +26,6 @@ class Battle(BaseWindow):
 
         def heal():
             None
-
-        canvas = Canvas(bg="black", width=300, height=200)
-        canvas.pack(anchor=CENTER, expand=1)
 
         self.btnframe = tk.Frame(borderwidth=1, bg="#FF4500")
         self.btnframe.pack(anchor='s', padx=5, pady=5)

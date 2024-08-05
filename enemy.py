@@ -1,35 +1,35 @@
+import random
+
+
 class Enemy:
-    def __init__(self, name, health, attack, defense, behavior_patterns):
-        self.name = name  # Имя врага
-        self.health = health  # Здоровье врага
-        self.attack = attack  # Атака врага
-        self.defense = defense  # Защита врага
-        self.behavior_patterns = behavior_patterns  # Паттерны поведения
+    def __init__(self, name, base_health, attack, defense, behavior_patterns):
+        self.name = name
+        self.base_health = base_health  # Базовое здоровье
+        self.health = base_health  # Текущее здоровье
+        self.attack = attack
+        self.defense = defense
+        self.behavior_patterns = behavior_patterns
 
     def take_damage(self, damage):
-        """Уменьшает здоровье врага на величину урона, учитывая защиту."""
         effective_damage = max(0, damage - self.defense)
         self.health -= effective_damage
         return effective_damage
 
     def is_alive(self):
-        """Проверяет, жив ли враг."""
         return self.health > 0
 
     def perform_behavior(self):
-        """Выполняет поведение врага на основе его паттернов."""
-        # Здесь можно реализовать логику выбора поведения
-        # Например, случайный выбор паттерна из списка
-        import random
         pattern = random.choice(self.behavior_patterns)
         return pattern.execute()
 
+    def reset_health(self):
+        """Сбросить текущее здоровье до базового значения."""
+        self.health = self.base_health
+
 class BehaviorPattern:
     def __init__(self, name, action):
-        self.name = name  # Название паттерна
-        self.action = action  # Действие, которое выполняет паттерн
+        self.name = name
+        self.action = action
 
     def execute(self):
-        """Выполняет действие паттерна."""
-        # Здесь можно реализовать логику действия
         return self.action()
