@@ -2,6 +2,8 @@ from tkinter import *
 import tkinter as tk
 from basewindow import BaseWindow
 from saves import fsmod
+from player import Player
+from enemy import Enemy, BehaviorPattern
 
 class Battle(BaseWindow):
     def __init__(self):
@@ -10,10 +12,8 @@ class Battle(BaseWindow):
         if fsmod() == True:
             self.ebutton = tk.Button(self, text="Exit", bg="Black", fg="#FF4500", activebackground="#FF4500",
                                      activeforeground="Black")
-            self.ebutton["command"] = self.button_clicked
+            self.ebutton["command"] = self.ex_button_clicked
             self.ebutton.pack(anchor="ne", expand=1)
-        else:
-            None
 
         def attack():
             None
@@ -46,5 +46,5 @@ class Battle(BaseWindow):
                               activebackground="#FF4500", activeforeground="Black")
         self.play.pack(ipadx=26, ipady=10, anchor="s", side=LEFT)
 
-    def button_clicked(self):
+    def ex_button_clicked(self):
         self.destroy()

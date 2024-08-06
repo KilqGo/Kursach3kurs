@@ -1,5 +1,12 @@
 import random
 
+class BehaviorPattern:
+    def __init__(self, name, action):
+        self.name = name
+        self.action = action
+
+    def execute(self):
+        return self.action()
 
 class Enemy:
     def __init__(self, name, base_health, attack, defense, behavior_patterns):
@@ -25,11 +32,3 @@ class Enemy:
     def reset_health(self):
         """Сбросить текущее здоровье до базового значения."""
         self.health = self.base_health
-
-class BehaviorPattern:
-    def __init__(self, name, action):
-        self.name = name
-        self.action = action
-
-    def execute(self):
-        return self.action()

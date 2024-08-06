@@ -1,5 +1,4 @@
 class Player:
-
     def __init__(self, fortitude, prudence, temperance, justice, experience):
         self.name = "Мйю"
         self.base_health = fortitude*10  # Базовое здоровье
@@ -25,11 +24,11 @@ class Player:
 
     def heal(self, amount):
         if self.health + amount > self.base_health:
-            self.health = self.base_health  # Восстанавливаем до максимального здоровья
+            self.health = self.base_health
         else:
             self.health += amount
 
-    def use_power_attack(self):
+    def use_charge_attack(self):
         if self.charge_counter >= 3:
             self.charge_counter = 0
             return self.attack * 3  # Увеличенный урон
