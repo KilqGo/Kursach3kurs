@@ -7,6 +7,7 @@ from inventory import Inventory
 from battle import Battle
 from event import Event
 
+
 class Research(BaseWindow):
     def __init__(self):
         super().__init__()

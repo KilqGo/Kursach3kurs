@@ -1,60 +1,72 @@
 import tkinter as tk
 from tkinter import ttk
-
+from basewindow import BaseWindow
 from player import Player
 from enemy import Enemy, BehaviorPattern
+from saves import fsmod
 
+class Battle(BaseWindow):
 
-class BattleWindow(tk.Tk):
     def __init__(self, player, enemy):
         super().__init__()
+
         self.title(f"Сражение с {enemy.name}")
         self.player = player
         self.enemy = enemy
 
-        # Устанавливаем размер окна
-        self.geometry("800x600")
+        # Полноэкранный режим
+        if fsmod() == True:
+            self.ebutton = tk.Button(self, text="Exit", bg="Black", fg="#FF4500", activebackground="#FF4500",
+                                     activeforeground="Black")
+            self.ebutton["command"] = self.ex_button_clicked
+            self.ebutton.pack(anchor="ne", expand=1)
 
         # Создание виджетов
-        self.health_label = ttk.Label(self, text=f"Здоровье врага: {enemy.health}")
+        self.health_label = ttk.Label(self, text=f"Здоровье {self.enemy.name}: {enemy.health}", background="#FF4500")
         self.health_label.pack(pady=10)
 
-        self.player_health_label = ttk.Label(self, text=f"Здоровье {player.name}: {player.health}")
+        self.player_health_label = ttk.Label(self, text=f"Здоровье {player.name}: {player.health}", background="#FF4500")
         self.player_health_label.pack(pady=10)
 
-        self.experience_label = ttk.Label(self, text=f"Опыт {player.name}: {player.experience}")
+        self.experience_label = ttk.Label(self, text=f"Опыт {player.name}: {player.experience}", background="#FF4500")
         self.experience_label.pack(pady=10)
 
-        # Счетчик для усиленной атаки
-        self.power_attack_counter_label = ttk.Label(self,
-                                                    text=f"Ходов до усиленной атаки: {3 - self.player.charge_counter}")
-        self.power_attack_counter_label.pack(pady=10)
+        # Счетчик для заряженной атаки
+        self.charge_attack_counter_label = ttk.Label(self, text=f"Ходов до заряженной атаки: {3 - self.player.charge_counter}",
+                                                     background="#FF4500")
+        self.charge_attack_counter_label.pack(pady=10)
 
-        # Метка готовности усиленной атаки
-        self.power_attack_ready_label = ttk.Label(self, text="")
-        self.power_attack_ready_label.pack(pady=10)
+        # Метка готовности заряженной атаки
+        self.charge_attack_ready_label = ttk.Label(self, text="", background="#FF4500")
+        self.charge_attack_ready_label.pack(pady=10)
 
         # Панель для кнопок
-        button_frame = ttk.Frame(self)
-        button_frame.pack(pady=20)
+        button_frame = tk.Frame(self, bg="#FF4500")
+        button_frame.pack(anchor='s', padx=5, pady=5)
 
-        self.action_button = ttk.Button(button_frame, text="Атаковать", command=self.player_attack)
-        self.action_button.pack(side=tk.LEFT, padx=5)
+        self.action_button = tk.Button(button_frame, text="Атаковать", command=self.player_attack, bg="Black", fg="#FF4500",
+                              activebackground="#FF4500", activeforeground="Black")
+        self.action_button.pack(ipadx=16, ipady=10, anchor="s", side=tk.LEFT)
 
-        self.defend_button = ttk.Button(button_frame, text="Защититься", command=self.player_defend)
-        self.defend_button.pack(side=tk.LEFT, padx=5)
+        self.defend_button = tk.Button(button_frame, text="Защититься", command=self.player_defend, bg="Black", fg="#FF4500",
+                              activebackground="#FF4500", activeforeground="Black")
+        self.defend_button.pack(ipadx=12, ipady=10, anchor="s", side=tk.LEFT)
 
-        self.heal_button = ttk.Button(button_frame, text="Лечиться", command=self.player_heal)
-        self.heal_button.pack(side=tk.LEFT, padx=5)
+        self.heal_button = tk.Button(button_frame, text="Лечиться", command=self.player_heal,  bg="Black", fg="#FF4500",
+                              activebackground="#FF4500", activeforeground="Black")
+        self.heal_button.pack(ipadx=26, ipady=10, anchor="s", side=tk.LEFT)
 
-        self.power_attack_button = ttk.Button(button_frame, text="Усиленная атака", command=self.player_power_attack,
-                                              state="disabled")
-        self.power_attack_button.pack(side=tk.LEFT, padx=5)
+        self.charge_attack_button = tk.Button(button_frame, text="Заряженная атака", command=self.player_charge_attack, bg="Black", fg="#FF4500",
+                              activebackground="#FF4500", activeforeground="Black", state="disabled")
+        self.charge_attack_button.pack(ipadx=26, ipady=10, anchor="s", side=tk.LEFT)
 
-        self.result_label = ttk.Label(self, text="")
+        self.result_label = ttk.Label(self, text="", background="#FF4500")
         self.result_label.pack(pady=10)
 
         self.start_battle()
+
+    def ex_button_clicked(self):
+        self.destroy()
 
     def start_battle(self):
         self.enemy.reset_health()  # Восстановить здоровье врага перед началом боя
@@ -71,18 +83,18 @@ class BattleWindow(tk.Tk):
             damage_taken_by_player = self.player.take_damage(enemy_damage)
             self.update_health_labels()
             self.result_label.config(
-                text=f"Вы нанесли {damage_taken} урона. {enemy_action} Враг нанес {damage_taken_by_player} урона.")
+                text=f"Вы нанесли {damage_taken} урона. {enemy_action} {self.enemy.name} нанес {damage_taken_by_player} урона.")
         else:
             self.player.experience += 1  # Увеличиваем опыт игрока
             self.result_label.config(text=f"Вы победили {self.enemy.name}! Опыт увеличен на 1.")
             self.disable_buttons()
             self.destroy()  # Закрыть окно сражения
 
-        self.check_power_attack_ready()
+        self.check_charge_attack_ready()
         self.check_player_alive()
 
-    def player_power_attack(self):
-        damage = self.player.use_power_attack()
+    def player_charge_attack(self):
+        damage = self.player.use_charge_attack()
         damage_taken = self.enemy.take_damage(damage)
         self.update_health_labels()
 
@@ -92,14 +104,14 @@ class BattleWindow(tk.Tk):
             damage_taken_by_player = self.player.take_damage(enemy_damage)
             self.update_health_labels()
             self.result_label.config(
-                text=f"Вы использовали усиленную атаку и нанесли {damage_taken} урона. {enemy_action} Враг нанес {damage_taken_by_player} урона.")
+                text=f"Вы использовали заряженную атаку и нанесли {damage_taken} урона. {enemy_action} {self.enemy.name} нанес {damage_taken_by_player} урона.")
         else:
             self.player.experience += 1  # Увеличиваем опыт игрока
             self.result_label.config(text=f"Вы победили {self.enemy.name}! Опыт увеличен на 1.")
             self.disable_buttons()
             self.destroy()  # Закрыть окно сражения
 
-        self.check_power_attack_ready()
+        self.check_charge_attack_ready()
         self.check_player_alive()
 
     def player_defend(self):
@@ -112,10 +124,10 @@ class BattleWindow(tk.Tk):
             enemy_damage = self.enemy.attack // 2  # Уменьшенный урон при защите
             damage_taken_by_player = self.player.take_damage(enemy_damage)
             self.update_health_labels()
-            self.result_label.config(text=f"{enemy_action} Враг нанес {damage_taken_by_player} урона.")
+            self.result_label.config(text=f"{enemy_action} {self.enemy.name} нанес {damage_taken_by_player} урона.")
 
         self.player.defense -= 5  # Возврат защиты к обычному значению
-        self.check_power_attack_ready()
+        self.check_charge_attack_ready()
         self.check_player_alive()
 
     def player_heal(self):
@@ -130,28 +142,28 @@ class BattleWindow(tk.Tk):
             enemy_damage = self.enemy.attack
             damage_taken_by_player = self.player.take_damage(enemy_damage)
             self.update_health_labels()
-            self.result_label.config(text=f"{enemy_action} Враг нанес {damage_taken_by_player} урона.")
+            self.result_label.config(text=f"{enemy_action} {self.enemy.name} нанес {damage_taken_by_player} урона.")
 
-        self.check_power_attack_ready()
+        self.check_charge_attack_ready()
         self.check_player_alive()
 
     def update_health_labels(self):
-        self.health_label.config(text=f"Здоровье врага: {self.enemy.health}")
+        self.health_label.config(text=f"Здоровье {self.enemy.name}: {self.enemy.health}")
         self.player_health_label.config(text=f"Здоровье {self.player.name}: {self.player.health}")
         self.experience_label.config(text=f"Опыт {self.player.name}: {self.player.experience}")
 
         # Обновление счетчика и метки готовности
         if self.player.charge_counter >= 3:
-            self.power_attack_ready_label.config(text="Заряженная атака готова!")
-            self.power_attack_button.config(state="normal")  # Разблокировать кнопку усиленной атаки
+            self.charge_attack_ready_label.config(text="Заряженная атака готова!")
+            self.charge_attack_button.config(state="normal")  # Разблокировать кнопку заряженной атаки
         else:
-            self.power_attack_ready_label.config(text="")
+            self.charge_attack_ready_label.config(text="")
 
-    def check_power_attack_ready(self):
+    def check_charge_attack_ready(self):
         if self.player.charge_counter >= 3:
-            self.power_attack_button.config(state="normal")  # Разблокировать кнопку усиленной атаки
+            self.charge_attack_button.config(state="normal")  # Разблокировать кнопку заряженной атаки
         else:
-            self.power_attack_button.config(state="disabled")  # Заблокировать кнопку
+            self.charge_attack_button.config(state="disabled")  # Заблокировать кнопку
 
     def check_player_alive(self):
         if not self.player.is_alive():
@@ -165,7 +177,7 @@ class BattleWindow(tk.Tk):
         self.action_button.config(state="disabled")
         self.defend_button.config(state="disabled")
         self.heal_button.config(state="disabled")
-        self.power_attack_button.config(state="disabled")
+        self.charge_attack_button.config(state="disabled")
 
 
 if __name__ == "__main__":
@@ -173,11 +185,11 @@ if __name__ == "__main__":
     aggressive_pattern = BehaviorPattern("Агрессивный", lambda: "Враг атакует!")
     defensive_pattern = BehaviorPattern("Защитный", lambda: "Враг защищается!")
 
-    enemy = Enemy("Враг1", 100, 15, 5, [aggressive_pattern, aggressive_pattern, defensive_pattern])
+    enemy = Enemy("Рой фей", 100, 15, 0, [aggressive_pattern, aggressive_pattern, defensive_pattern])
 
     # Создание игрока
-    player = Player("Мйю", 100, 10, 5, 0)
+    player = Player("Мйю", 10, 1, 1, 0)
 
     # Запуск окна битвы
-    battle_window = BattleWindow(player, enemy)
+    battle_window = Battle(player, enemy)
     battle_window.mainloop()
