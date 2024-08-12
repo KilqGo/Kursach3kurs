@@ -4,6 +4,8 @@ from saves import fsmod
 from basewindow import BaseWindow
 from information import Information
 from inventory import Inventory
+from player import Player
+from enemy import Enemy, BehaviorPattern
 from battle import Battle
 from event import Event
 
@@ -28,8 +30,26 @@ class Research(BaseWindow):
             informationwindow = Information()
 
         def battle():
-            self.destroy()
+            # Создание врага
+            aggressive_pattern = BehaviorPattern("Агрессивный", lambda: "Враг атакует!")
+            defensive_pattern = BehaviorPattern("Защитный", lambda: "Враг защищается!")
+            enemy = Enemy("Рой фей", 100, 15, 0, [aggressive_pattern])
+            # Создание игрока
+            player = Player("Мйю", 10, 1, 1, 0)
+            # ТУТ ПОКАЧТО ВВОД ID ВРАГА ПОКА НЕ СДЕЛАЮ НОРМАЛЬНО КРАТУ-------------------------------------------------=
+            enemy_id = 2
+
+            if enemy_id == 1:
+                enemy = Enemy("Рой фей", 100, 15, 0, [aggressive_pattern, aggressive_pattern, defensive_pattern])
+            elif enemy_id == 2:
+                enemy = Enemy("ЗНН", 150, 20, 0, [aggressive_pattern, defensive_pattern])
+            else:
+                enemy = Enemy("Ошибка", 30, 10, 0, [aggressive_pattern])
+            # Запуск окна битвы
+
+            battle_window = Battle(player, enemy)
             battlewindow = Battle()
+
 
         def event():
             eventwindow = Event()
