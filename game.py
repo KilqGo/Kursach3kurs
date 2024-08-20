@@ -36,8 +36,9 @@ class Research(BaseWindow):
             enemy = Enemy("Рой фей", 100, 15, 0, [aggressive_pattern])
             # Создание игрока
             player = Player("Мйю", 10, 1, 1, 0)
+
             # ТУТ ПОКАЧТО ВВОД ID ВРАГА ПОКА НЕ СДЕЛАЮ НОРМАЛЬНО КРАТУ-------------------------------------------------=
-            enemy_id = 2
+            enemy_id = 3
 
             if enemy_id == 1:
                 enemy = Enemy("Рой фей", 100, 15, 0, [aggressive_pattern, aggressive_pattern, defensive_pattern])
