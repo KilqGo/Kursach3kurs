@@ -53,10 +53,9 @@ class Research(BaseWindow):
 
 
         def event():
+            
             eventwindow = Event()
 
-        canvas = Canvas(bg="black", width=300, height=200)
-        canvas.pack(anchor=CENTER, expand=1)
 
         self.btnframe = tk.Frame(borderwidth=1, bg="#FF4500")
         self.btnframe.pack(anchor='s', padx=5, pady=5)
