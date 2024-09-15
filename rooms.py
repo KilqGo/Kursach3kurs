@@ -1,66 +1,47 @@
 class Room:
-    def __init__(self, room_id, room_text, right_room=None):
-        self.room_id = room_id
+    def __init__(self, room_text, battle_id, connected_rooms=None):
         self.room_text = room_text
-        self.right_room = right_room
+        self.battle_id = battle_id
+        self.connected_rooms = connected_rooms if connected_rooms is not None else []
 
     def __str__(self):
-        return self.room_text
+        return f"{self.room_text} (Battle ID: {self.battle_id})"
 
 
 def main():
-    # комнаты
-    room1 = Room(1, "Начало")
-    room2 = Room(2, "Верх_1")
-    room3 = Room(3, "Низ_1")
-    room4 = Room(4, "Верх_2")
-    room5 = Room(5, "Низ_2")
-    room6 = Room(6, "Конец")
 
-    # связи между комнатами
-    room1.right_room = (room2, room3)  # разветвление на комнаты 2 и 3
-    room2.right_room = room4  # путь из комнаты 2 в комнату 4
-    room3.right_room = room5  # путь из комнаты 3 в комнату 5
-    room4.right_room = room6  # путь из комнаты 4 в комнату 6
-    room5.right_room = room6  # путь из комнаты 5 в комнату 6
+    rooms = [
+        Room("Начало", 0, ["Верх 1", "Низ 1"]),
+        Room("Верх 1", 1, ["Верх 2"]),
+        Room("Верх 2", 2, ["Конец"]),
+        Room("Низ 1", 1, ["Низ 2"]),
+        Room("Низ 2", 0, ["Конец"]),
+        Room("Конец", 0)
+    ]
 
-    # начальная позиция
-    current_room = room1
+    current_room = rooms[0]  # начало
 
     while True:
+        if current_room.room_text == "Конец":
+            print("Победа!")
+            break
+
         print(f"\nВы находитесь в: {current_room}")
 
-        # проверяем, есть ли доступные комнаты
-        if isinstance(current_room.right_room, tuple):
-            print("Выберите комнату для перемещения:")
-            print("1. Верх")
-            print("2. Низ")
-            choice = input("Введите номер комнаты: ")
+        # проверка доступных
+        print("Выбор комнаты:")
+        for i, room_name in enumerate(current_room.connected_rooms):
+            print(f"{i + 1}. {room_name}")
 
-            if choice == '1':
-                current_room = current_room.right_room[0]  # перемещение в комнату 2
-                print("Вы идёте наверх.")
-            elif choice == '2':
-                current_room = current_room.right_room[1]  # перемещение в комнату 3
-                print("Вы идёте вниз.")
-            else:
-                print("Ошибка.")
-                continue
+        choice = input("Выбор номера комнаты: ")
 
-        if current_room.right_room:
-            print(f"Вы можете переместиться в: {current_room.right_room}")
-            choice = input("Введите '1' для перемещения вперед: ")
-
-            if choice.lower() == '1':
-                current_room = current_room.right_room
-                print(f"Вы переместились в {current_room}.")
-
-                if current_room.room_id == 6:
-                    print("Конец.")
-                    break
-            else:
-                print("Ошибка.")
-
+        if choice.isdigit() and 1 <= int(choice) <= len(current_room.connected_rooms):
+            selected_room_name = current_room.connected_rooms[int(choice) - 1]
+            current_room = next((room for room in rooms if room.room_text == selected_room_name), current_room)
+            print(f"Перемещение в {current_room}.")
+        else:
+            print("Ошибка ввода.")
+            continue
 
 if __name__ == "__main__":
     main()
