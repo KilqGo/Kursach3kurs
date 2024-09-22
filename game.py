@@ -8,7 +8,7 @@ from player import Player
 from enemy import Enemy, BehaviorPattern
 from battle import Battle
 from event import Event
-
+from rooms import Room
 
 class Research(BaseWindow):
     def __init__(self):
@@ -19,9 +19,54 @@ class Research(BaseWindow):
                                      activeforeground="Black")
             self.ebutton["command"] = self.button_clicked
             self.ebutton.pack(anchor="ne", expand=1)
-        else:
-            None
 
+        self.rooms = [
+            Room("Начало", ["Верх 1", "Низ 1"]),
+            Room("Верх 1", ["Верх 2"]),
+            Room("Верх 2", ["Конец"]),
+            Room("Низ 1", ["Низ 2"]),
+            Room("Низ 2", ["Конец"]),
+            Room("Конец")
+        ]
+
+        self.current_room = self.rooms[0]  # начало
+
+        self.text_box = tk.Text(self, height=15, width=50, bg="#FF4500", fg="black", insertbackground='black', bd=2,
+                                relief="solid")
+        self.text_box.pack(pady=10)
+
+        self.buttons_frame = tk.Frame(self, bg="black")
+        self.buttons_frame.pack(pady=10)
+
+
+
+        def update_text_box():
+            self.text_box.delete("1.0", tk.END)  # чистка текста
+            if not self.current_room.connected_rooms:
+                self.text_box.insert(tk.END, "Победа! Игра окончена.")
+                return
+
+            self.text_box.insert(tk.END, f"\nВы находитесь в: {self.current_room}\n")
+            self.text_box.insert(tk.END, "Выбор комнаты:\n")
+
+        def create_room_buttons():
+            for widget in self.buttons_frame.winfo_children():
+                widget.destroy()  # удаление кнопок
+
+            for room_name in self.current_room.connected_rooms:
+                button = tk.Button(self.buttons_frame, text=room_name,
+                                   bg="#FF4500", fg="black",
+                                   bd=2, relief="solid",
+                                   command=lambda name=room_name: move_to_room(name))
+                button.pack(side=tk.LEFT, padx=5)
+
+        def move_to_room(room_name):
+            selected_room = next((room for room in self.rooms if room.room_text == room_name), None)
+
+            if selected_room:
+                self.current_room = selected_room
+                update_text_box()
+                create_room_buttons()
 
         def inventory():
             inventorywindow = Inventory()
@@ -71,6 +116,9 @@ class Research(BaseWindow):
 
         self.play = tk.Button(self.btnframe,command=event,text="Event",bg="Black",fg="#FF4500",activebackground="#FF4500",activeforeground="Black")
         self.play.pack(ipadx=26, ipady=10,anchor="s",side=LEFT)
+
+        update_text_box()
+        create_room_buttons()
 
     def button_clicked(self):
         self.destroy()
