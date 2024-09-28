@@ -22,9 +22,9 @@ class Research(BaseWindow):
 
         self.rooms = [
             Room("Начало", ["Верх 1", "Низ 1"]),
-            Room("Верх 1", ["Верх 2"]),
+            Room("Верх 1", ["Верх 2"], 1),
             Room("Верх 2", ["Конец"]),
-            Room("Низ 1", ["Низ 2"]),
+            Room("Низ 1", ["Низ 2"], 2),
             Room("Низ 2", ["Конец"]),
             Room("Конец")
         ]
@@ -68,13 +68,16 @@ class Research(BaseWindow):
                 update_text_box()
                 create_room_buttons()
 
+            if self.current_room.battle_id != 0:
+                battle(self.current_room.battle_id)
+
         def inventory():
             inventorywindow = Inventory()
 
         def information():
             informationwindow = Information()
 
-        def battle():
+        def battle(battle_id):
             # Создание врага
             aggressive_pattern = BehaviorPattern("Агрессивный", lambda: "Враг атакует!")
             defensive_pattern = BehaviorPattern("Защитный", lambda: "Враг защищается!")
@@ -82,12 +85,9 @@ class Research(BaseWindow):
             # Создание игрока
             player = Player("Мйю", 10, 1, 1, 0)
 
-            # ТУТ ПОКАЧТО ВВОД ID ВРАГА ПОКА НЕ СДЕЛАЮ НОРМАЛЬНО КРАТУ-------------------------------------------------=
-            enemy_id = 3
-
-            if enemy_id == 1:
+            if battle_id == 1:
                 enemy = Enemy("Рой фей", 100, 15, 0, [aggressive_pattern, aggressive_pattern, defensive_pattern])
-            elif enemy_id == 2:
+            elif battle_id == 2:
                 enemy = Enemy("ЗНН", 150, 20, 0, [aggressive_pattern, defensive_pattern])
             else:
                 enemy = Enemy("Ошибка", 30, 10, 0, [aggressive_pattern])
